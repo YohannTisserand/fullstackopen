@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-// const Display = ({counter}) => <div>{counter}</div>
-
 const Header = ({title}) => {
   return (
     <div>{title}</div>
