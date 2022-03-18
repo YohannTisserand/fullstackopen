@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/personForm'
 import Content from './components/content'
 import Filter from './components/filter'
-import phoneBoookService from './services/phoneBook'
+import phoneBookService from './services/phoneBook'
 import axios from 'axios'
 
 
@@ -15,7 +15,7 @@ const App = ({person}) => {
 
   const hook = () => {
     console.log('effect')
-    phoneBoookService
+    phoneBookService
       .getAll()
       .then(response => {
         console.log('promise fulfilled')
@@ -40,6 +40,16 @@ const App = ({person}) => {
     setPersons(filteredPersons)
   }
 
+  const deleteUser = (id, event) => {
+    if (window.confirm(`Are you sure?`)) {
+      phoneBookService
+        .erase(id)
+        .then(response => {
+          console.log(response.data)
+        })
+    }
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     if (persons.filter((person) => person.name === newName).length > 0) {
@@ -49,18 +59,17 @@ const App = ({person}) => {
       }, 2000);
     } else {
     const newObject = {
-      id: persons.length + 1,
       name: newName,
       number: newNumber
     }
-    phoneBoookService
+    phoneBookService
       .create(newObject)
       .then(response => {
         setPersons(persons.concat(newObject))
         setNewName('')
       })
-  }  
-}
+    }
+  } 
 
   return (
     <div>
@@ -68,9 +77,9 @@ const App = ({person}) => {
       <em>{error}</em>
       <Filter value={newFilter} onChange={handleFilterChange} />
       <h2>Add a New</h2>
-      <PersonForm onSubmit={addPerson} newName={newName} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
+      <PersonForm onSubmit={addPerson} newName={newName} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Content persons={persons} />
+      <Content persons={persons} deleteUser={deleteUser}/>
     </div>
   )
 }

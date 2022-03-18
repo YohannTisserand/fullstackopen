@@ -1,11 +1,11 @@
 import React from "react";
 import { Person } from "./person";
 
-const Content = ({persons}) => {
+const Content = ({persons, deleteUser}) => {
   return (
   <ul>
     {persons.map((person, i) => 
-    <Person key={i} person={person} />)}
+    <Person key={i} person={person} deleteUser={deleteUser} />)}
   </ul>
   )
 }
