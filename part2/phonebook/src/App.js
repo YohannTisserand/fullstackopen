@@ -40,16 +40,6 @@ const App = ({person}) => {
     setPersons(filteredPersons)
   }
 
-  const deleteUser = (id, event) => {
-    if (window.confirm(`Are you sure?`)) {
-      phoneBookService
-        .erase(id)
-        .then(response => {
-          console.log(response.data)
-        })
-    }
-  }
-
   const addPerson = (event) => {
     event.preventDefault()
     if (persons.filter((person) => person.name === newName).length > 0) {
@@ -68,6 +58,16 @@ const App = ({person}) => {
     }
   } 
 
+  const deleteUser = (id, event) => {
+    if (window.confirm(`Are you sure?`)) {
+      phoneBookService
+        .erase(id)
+        .then(response => {
+          console.log(response.data)
+        })
+    }
+  }
+  
   return (
     <div>
       <h2>Phonebook</h2>
