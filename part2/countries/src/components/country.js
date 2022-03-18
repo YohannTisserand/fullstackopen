@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Languages from '../language'
+import Languages from './language'
 
 const Country = ({country}) => {
   return (

@@ -31,7 +31,7 @@ const App = () => {
     <div>
       <h1>Countries</h1>
       <Filter value={newFilter} onChange={handleFilterChange} />
-      <Content countries={countries} />
+      <Content countries={countries} setCountries={setCountries}/>
     </div>
   )
 }

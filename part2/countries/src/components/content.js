@@ -1,7 +1,7 @@
 import React from "react";
 import Country from "./country";
 
-const Content = ({countries}) => {
+const Content = ({countries, setCountries}) => {
   if (countries.length > 10) {
     return (
       <p>Too many matches, specify another filter</p>
@@ -14,7 +14,7 @@ const Content = ({countries}) => {
   return (
   <ul>
     {countries.map(country => 
-    <li key={country.name.common}>{country.name.common}</li>
+    <li key={country.name.common}>{country.name.common} <button onClick={() => setCountries([country])}>show</button></li>
     )}
   </ul>
   )
