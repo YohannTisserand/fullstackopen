@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/personForm'
 import Content from './components/content'
 import Filter from './components/filter'
+import phoneBoookService from './services/phoneBook'
 import axios from 'axios'
+
 
 const App = ({person}) => {
   const [persons, setPersons] = useState([]) 
@@ -13,8 +15,8 @@ const App = ({person}) => {
 
   const hook = () => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    phoneBoookService
+      .getAll()
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
@@ -51,8 +53,8 @@ const App = ({person}) => {
       name: newName,
       number: newNumber
     }
-    axios
-      .post('http://localhost:3001/persons', newObject)
+    phoneBoookService
+      .create(newObject)
       .then(response => {
         setPersons(persons.concat(newObject))
         setNewName('')
