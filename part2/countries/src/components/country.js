@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Languages from './language'
+import Weather from './weather'
 
 const Country = ({country}) => {
   return (
@@ -10,6 +11,7 @@ const Country = ({country}) => {
         <h2>Spoken languages</h2>
        <Languages country={country} />
        <img src={country.flags.png} alt="Country flag"></img>
+       <Weather city={country.capital} />
       </div>
   )
 }
