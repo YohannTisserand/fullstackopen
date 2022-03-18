@@ -58,10 +58,7 @@ const App = ({person}) => {
         setError("");
       }, 2000);
     } else {
-    const newObject = {
-      name: newName,
-      number: newNumber
-    }
+    const newObject = { name: newName, number: newNumber }
     phoneBookService
       .create(newObject)
       .then(response => {
