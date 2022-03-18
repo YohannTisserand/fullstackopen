@@ -9,7 +9,7 @@ const App = ({person}) => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [errorMsg, setErrorMsg] = useState("");
+  const [error, setError] = useState("");
 
   const hook = () => {
     console.log('effect')
@@ -43,7 +43,7 @@ const App = ({person}) => {
     if (persons.filter((person) => person.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`);
       setTimeout(() => {
-        setErrorMsg("");
+        setError("");
       }, 2000);
     } else {
     const newObject = {
@@ -59,7 +59,7 @@ const App = ({person}) => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <em>{errorMsg}</em>
+      <em>{error}</em>
       <Filter value={newFilter} onChange={handleFilterChange} />
       <h2>Add a New</h2>
       <PersonForm onSubmit={addPerson} newName={newName} handlePersonChange={handlePersonChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
