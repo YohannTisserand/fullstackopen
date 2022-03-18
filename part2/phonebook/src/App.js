@@ -42,6 +42,7 @@ const App = ({person}) => {
 
     const personToUpdate = persons[0]
     const updatedPerson = { ...personToUpdate, number: newNumber }
+    
     if (window.confirm(`${personToUpdate.name} is a user. Update?`)){
       phoneBookService
         .update(updatedPerson.id, updatedPerson)
