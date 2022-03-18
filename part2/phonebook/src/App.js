@@ -13,17 +13,6 @@ const App = ({person}) => {
   const [newFilter, setNewFilter] = useState('')
   const [error, setError] = useState("");
 
-  const hook = () => {
-    console.log('effect')
-    phoneBookService
-      .getAll()
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
-  }
-  useEffect(hook, [])
-
   const handlePersonChange = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
@@ -40,13 +29,27 @@ const App = ({person}) => {
     setPersons(filteredPersons)
   }
 
+  useEffect(() => {
+    phoneBookService
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
+
   const addPerson = (event) => {
     event.preventDefault()
-    if (persons.filter((person) => person.name === newName).length > 0) {
-      alert(`${newName} is already added to phonebook`);
-      setTimeout(() => {
-        setError("");
-      }, 2000);
+
+    const personToUpdate = persons[0]
+    const updatedPerson = { ...personToUpdate, number: newNumber }
+    if (window.confirm(`${personToUpdate.name} is a user. Update?`)){
+      phoneBookService
+        .update(updatedPerson.id, updatedPerson)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== personToUpdate.id ? person : response.data))
+            setNewName('')
+            setNewNumber('')
+        })
     } else {
     const newObject = { name: newName, number: newNumber }
     phoneBookService
@@ -58,7 +61,7 @@ const App = ({person}) => {
     }
   } 
 
-  const deleteUser = (id, event) => {
+  const deleteUser = (id) => {
     if (window.confirm(`Are you sure?`)) {
       phoneBookService
         .erase(id)
@@ -67,7 +70,7 @@ const App = ({person}) => {
         })
     }
   }
-  
+
   return (
     <div>
       <h2>Phonebook</h2>
