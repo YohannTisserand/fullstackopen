@@ -42,7 +42,6 @@ const App = ({person}) => {
 
     const personToUpdate = persons[0]
     const updatedPerson = { ...personToUpdate, number: newNumber }
-    
     if (window.confirm(`${personToUpdate.name} is a user. Update?`)){
       phoneBookService
         .update(updatedPerson.id, updatedPerson)
@@ -51,7 +50,13 @@ const App = ({person}) => {
             setNewName('')
             setNewNumber('')
         })
-    } else {
+   
+    } else if (persons.filter((person) => person.name === newName).length > 0) {
+      alert(`${newName} is already added to phonebook`);
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+      
     const newObject = { name: newName, number: newNumber }
     phoneBookService
       .create(newObject)
