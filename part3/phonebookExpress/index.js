@@ -46,6 +46,13 @@ app.get('/persons/:id', (request, response) => {
   response.send(people)
 })
 
+app.delete('/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  people = persons.filter(person => person.id !== id)
+
+  response.status(204).end()
+})
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 })
