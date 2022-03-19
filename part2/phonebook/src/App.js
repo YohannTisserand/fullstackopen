@@ -39,25 +39,12 @@ const App = ({person}) => {
 
   const addPerson = (event) => {
     event.preventDefault()
-
-    const personToUpdate = persons[0]
-    const updatedPerson = { ...personToUpdate, number: newNumber }
-    
-    if (window.confirm(`${personToUpdate.name} is a user. Update?`)){
-      phoneBookService
-        .update(updatedPerson.id, updatedPerson)
-        .then(response => {
-          setPersons(persons.map(person => person.id !== personToUpdate.id ? person : response.data))
-            setNewName('')
-            setNewNumber('')
-        })
-   
-    } else if (persons.filter((person) => person.name === newName).length > 0) {
+    if (persons.filter((person) => person.name === newName).length > 0) {
       alert(`${newName} is already added to phonebook`);
       setTimeout(() => {
         setError("");
       }, 2000);
-
+    } else {
     const newObject = { name: newName, number: newNumber }
     phoneBookService
       .create(newObject)
