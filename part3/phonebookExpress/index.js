@@ -31,13 +31,19 @@ app.get('/', (request, response) => {
   response.send(persons)
 })
 
-app.get('/info', (request, response) => {
+app.get('/persons/info', (request, response) => {
   const date = new Date().toISOString()
   const people = persons.map(person => person.id)
   response.send(`
   <div>Phonebook has info for ${people.length} people</div>
   <div>${date}</div>
   `)
+})
+
+app.get('/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const people = persons.find(person => person.id === id)
+  response.send(people)
 })
 
 app.listen(PORT, () => {
