@@ -1,0 +1,11 @@
+# GET http://localhost:3001/persons
+
+# POST http://localhost:3001/persons
+# content-type: application/json
+
+# {
+#     "name": "sample",
+#     "number": "0099-99999"
+# }
+
+DELETE http://localhost:3001/persons/2

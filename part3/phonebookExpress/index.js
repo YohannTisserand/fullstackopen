@@ -75,7 +75,6 @@ app.post('/persons', (request, response) => {
 app.delete('/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   people = persons.filter(person => person.id !== id)
-
   response.status(204).end()
 })
 
