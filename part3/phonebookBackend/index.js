@@ -44,6 +44,12 @@ app.get('/api/info', (request, response) => {
   )
 })
 
+app.get('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const people = persons.find(people => people.id === id)
+  response.json(people)
+})
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
 })
