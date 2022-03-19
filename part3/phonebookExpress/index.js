@@ -32,8 +32,12 @@ app.get('/', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
+  const date = new Date().toISOString()
   const people = persons.map(person => person.id)
-  response.send(`there is ${people.length} here`)
+  response.send(`
+  <div>Phonebook has info for ${people.length} people</div>
+  <div>${date}</div>
+  `)
 })
 
 app.listen(PORT, () => {
