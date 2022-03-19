@@ -59,6 +59,10 @@ app.post('/persons', (request, response) => {
     return response.status(400).json({ 
       error: 'name missing' 
     })
+  } else if (persons.find(person => person.name === body.name)) {
+    return response.status(400).json({
+      error: 'name already exists'
+    })
   }
 
   const person = {
