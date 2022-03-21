@@ -1,8 +1,11 @@
+require('dotenv').config()
+// const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const morgan = require('morgan')
-const PORT = process.env.PORT || 3001
+const Person = require('./models/person')
+const PORT = process.env.PORT
 
 app.use(express.json())
 morgan.token('data',(request)=>{
@@ -17,28 +20,6 @@ app.use(cors())
 
 app.use(express.static("build"))
 
-persons = [
-  { 
-    "id": 1,
-    "name": "Arto Hellas", 
-    "number": "040-123456"
-  },
-  { 
-    "id": 2,
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523"
-  },
-  { 
-    "id": 3,
-    "name": "Dan Abramov", 
-    "number": "12-43-234345"
-  },
-  { 
-    "id": 4,
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122"
-  }
-]
 const incrementId = () => {
   const maxId = persons.length > 0
     ? Math.max(...persons.map(person => person.id))
@@ -51,51 +32,51 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  response.send(persons)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 app.get('/api/persons/info', (request, response) => {
   const date = new Date().toISOString()
-  const people = persons.map(person => person.id)
+  const person = persons.map(person => person.id)
   response.send(`
-  <div>Phonebook has info for ${people.length} people</div>
+  <div>Phonebook has info for ${person.length} people</div>
   <div>${date}</div>
   `)
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const people = persons.find(person => person.id === id)
-  response.send(people)
+  Person.findById(request.params.id).then(person => {
+    response.json(person)
+  })
 })
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
-  if (!body.name) {
+  if (body.name === undefined) {
     return response.status(400).json({ 
       error: 'name missing' 
     })
-  } else if (persons.find(person => person.name === body.name)) {
-    return response.status(400).json({
-      error: 'name already exists'
-    })
+  // } else if (persons.find(person => person.name === body.name)) {
+  //   return response.status(400).json({
+  //     error: 'name already exists'
+  //   })
   }
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: incrementId(),
-  }
-
-  persons = persons.concat(person)
-
-  response.json(person)
+  })
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  people = persons.filter(person => person.id !== id)
+  person = persons.filter(person => person.id !== id)
   response.status(204).end()
 })
 
