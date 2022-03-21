@@ -3,7 +3,6 @@ import PersonForm from './components/personForm'
 import Content from './components/content'
 import Filter from './components/filter'
 import phoneBookService from './services/phoneBook'
-import axios from 'axios'
 
 
 const App = ({person}) => {
