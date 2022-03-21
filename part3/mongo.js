@@ -12,19 +12,30 @@ const url =
 
 mongoose.connect(url)
 
-const PhonebookSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   name: String,
   number: String,
 })
 
-const PhoneBook = mongoose.model('PhoneBook', PhonebookSchema)
+const Person = mongoose.model('Person', personSchema)
 
-const phonebook = new PhoneBook({
-  "name": "Arto Hellas",
-  "number": "040-123456"
-})
+if (process.argv.length === 3) {
+  Person.find({})
+    .then(persons => {
+      console.log('phonebook')
+      persons.map(person => {
+        console.log(`${person.name} ${person.number}`)
+      })
+    })
+}
 
-phonebook.save().then(result => {
-  console.log('note saved!')
-  mongoose.connection.close()
-})
+if (process.argv.length === 5) {
+  const person = new Person({
+    name: process.argv[3],
+    number: process.argv[4]
+  })
+  person.save().then(result => {
+    console.log(`Added ${result.name} number ${result.number} to phonebook`)
+    mongoose.connection.close()
+  })
+}
