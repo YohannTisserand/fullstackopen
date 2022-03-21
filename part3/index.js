@@ -53,17 +53,28 @@ app.get('/api/persons/:id', (request, response) => {
   })
 })
 
+app.put('/api/persons/:id', (request, response, next) => {
+  const person = {
+    name: request.body.name,
+    number: request.body.number,
+  };
+
+  Person.findByIdAndUpdate(request.params.id, person, {
+    new: true,
+  })
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
+    })
+    .catch((error) => next(error));
+});
+
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
-  if (body.name === undefined) {
-    return response.status(400).json({ 
-      error: 'name missing' 
+  if (body.name === "") {
+    return response.status(400).json({
+      error: 'name missing'
     })
-  // } else if (persons.find(person => person.name === body.name)) {
-  //   return response.status(400).json({
-  //     error: 'name already exists'
-  //   })
   }
 
   const person = new Person({
