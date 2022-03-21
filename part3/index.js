@@ -11,25 +11,18 @@ app.use(express.json())
 
 morgan.token('data',(request)=>{
   if(request.method=='POST')
-  return " "+ JSON.stringify(request.body)
+    return ' '+ JSON.stringify(request.body)
   else
-  return " "
+    return ' '
 })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 app.use(cors())
 
-app.use(express.static("build"))
-
-const incrementId = () => {
-  const maxId = persons.length > 0
-    ? Math.max(...persons.map(person => person.id))
-    : 0
-  return maxId + 1
-}
+app.use(express.static('build'))
 
 app.get('/', (request, response) => {
-  response.send("Hello World")
+  response.send('Hello World')
 })
 
 app.get('/api/persons', (request, response) => {
@@ -59,12 +52,12 @@ app.put('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndUpdate(request.params.id,
     { name, number },
     {new: true, runValidators: true, context: 'query'}
-    )
+  )
     .then((updatedPerson) => {
-      response.json(updatedPerson);
+      response.json(updatedPerson)
     })
-    .catch((error) => next(error));
-});
+    .catch((error) => next(error))
+})
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
@@ -76,7 +69,7 @@ app.post('/api/persons', (request, response, next) => {
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
