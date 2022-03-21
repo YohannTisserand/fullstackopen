@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const morgan = require('morgan')
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 app.use(express.json())
 morgan.token('data',(request)=>{
@@ -12,7 +13,9 @@ morgan.token('data',(request)=>{
 })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
+app.use(cors())
 
+app.use(express.static("build"))
 
 persons = [
   { 
@@ -43,11 +46,15 @@ const incrementId = () => {
   return maxId + 1
 }
 
-app.get('/persons', (request, response) => {
+app.get('/', (request, response) => {
+  response.send("Hello World")
+})
+
+app.get('/api/persons', (request, response) => {
   response.send(persons)
 })
 
-app.get('/persons/info', (request, response) => {
+app.get('/api/persons/info', (request, response) => {
   const date = new Date().toISOString()
   const people = persons.map(person => person.id)
   response.send(`
@@ -56,13 +63,13 @@ app.get('/persons/info', (request, response) => {
   `)
 })
 
-app.get('/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   const people = persons.find(person => person.id === id)
   response.send(people)
 })
 
-app.post('/persons', (request, response) => {
+app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if (!body.name) {
@@ -86,7 +93,7 @@ app.post('/persons', (request, response) => {
   response.json(person)
 })
 
-app.delete('/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   people = persons.filter(person => person.id !== id)
   response.status(204).end()
